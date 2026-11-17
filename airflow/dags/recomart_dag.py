@@ -1,6 +1,6 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 import sys
 
 sys.path.append('/app')
@@ -14,7 +14,7 @@ default_args = {
 with DAG(
     'recomart_ingest_pipeline',
     default_args=default_args,
-    schedule_interval=None,
+    schedule=None,
     catchup=False,
 ) as dag:
 

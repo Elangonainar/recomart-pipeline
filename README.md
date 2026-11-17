@@ -33,9 +33,21 @@ recomart-pipeline/
 
 3. **Run Container:**
    ```bash
-   docker run -d -p 8080:8080 -v $(pwd)/data:/app/data --name recomart-app recomart-single-container:latest
+   docker run -d -p 8080:8080 -v ./data:/app/data --name recomart-app recomart-single-container:latest
    ```
 
-4. **Trigger Pipeline:**
+4. **check the docker is up by running below command you should see recomart-app with status Up:**
+   ```bash
+    docker ps
+   ```
+
+5. **Trigger Pipeline:**
    - Open browser at `http://localhost:8080` (Login: `admin` / `admin`).
    - Enable and trigger `recomart_ingest_pipeline`.
+
+6. **read raw tables**
+   - sqlite3 data/recomart.db 
+   - List all tables: Type .tables and press Enter.
+   - View table schema: Type .schema user_features (or any other table name).
+   - Run a query: Type a standard SQL query ending with a semicolon, e.g., SELECT * FROM user_features LIMIT 5;
+   - Exit the CLI: Type .exit and press Enter.
