@@ -24,7 +24,7 @@ recomart-pipeline/
    ./data/raw/items/date=2026-11-01
    ./data/raw/interactions/date=2026-11-01
    ```
-1. **Add Sample Data:**
+1. **clone the repository:**
    clone the repository to your local and flow the below steps.
    
 2. **Build Docker Image:**
