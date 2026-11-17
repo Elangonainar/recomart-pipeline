@@ -1,0 +1,9 @@
+stages:
+  ingest:
+    cmd: python ingest.py
+    deps:
+      - schema.sql
+      - ingest.py
+      - data/raw/
+    outs:
+      - data/recomart.db
