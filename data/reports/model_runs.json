@@ -1,0 +1,59 @@
+{
+  "tracking_uri": "http://localhost:5000",
+  "experiment": "recomart-recommendation",
+  "runs": [
+    {
+      "model": "baseline_global_mean",
+      "run_id": "c566665fb0b843dcacb0091be494f2ca",
+      "params": {
+        "train_rows": 334,
+        "test_rows": 84,
+        "split_seed": 42,
+        "test_fraction": 0.2
+      },
+      "metrics": {
+        "rmse": 1.0199064395515924,
+        "mae": 0.8445252352437982
+      }
+    },
+    {
+      "model": "content_based",
+      "run_id": "25a93c925e014a549ded0f2d98483a52",
+      "params": {
+        "top_k": 5,
+        "train_rows": 334,
+        "test_rows": 84,
+        "split_seed": 42,
+        "test_fraction": 0.2
+      },
+      "metrics": {
+        "rmse": 1.3011143094209383,
+        "mae": 1.0317202468467406,
+        "precision_at_5": 0.09142857142857143,
+        "recall_at_5": 0.2357142857142857,
+        "ranking_users": 35
+      }
+    },
+    {
+      "model": "matrix_factorization_svd",
+      "run_id": "acf08842cf2a480ebbec2e8392a60b40",
+      "params": {
+        "n_factors": 8,
+        "learning_rate": 0.01,
+        "reg": 0.05,
+        "epochs": 200,
+        "train_rows": 334,
+        "test_rows": 84,
+        "split_seed": 42,
+        "test_fraction": 0.2
+      },
+      "metrics": {
+        "rmse": 1.4137559967945243,
+        "mae": 1.0716871152061545,
+        "precision_at_5": 0.0742857142857143,
+        "recall_at_5": 0.2357142857142857,
+        "ranking_users": 35
+      }
+    }
+  ]
+}
