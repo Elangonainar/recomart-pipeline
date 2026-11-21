@@ -6,3 +6,4 @@ export AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS=True
 exec airflow standalone
 EOF
 chmod +x entrypoint.sh
+RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh

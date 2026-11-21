@@ -1,0 +1,253 @@
+{
+  "generated_at": "2026-11-21T06:53:59.946530+00:00",
+  "db_path": "data/recomart.db",
+  "passed": true,
+  "critical_failures": 0,
+  "warnings": 1,
+  "stats": {
+    "user_features_rows": 50,
+    "item_features_rows": 30,
+    "interactions_rows": 500,
+    "sparsity": 0.666667,
+    "avg_interactions_per_user": 10.0,
+    "users_without_interactions": 0,
+    "items_without_interactions": 0,
+    "partitions_loaded": 1
+  },
+  "checks": [
+    {
+      "check": "user_features: required columns present",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "user_features: not empty",
+      "status": "pass",
+      "severity": "critical",
+      "detail": "50 rows"
+    },
+    {
+      "check": "item_features: required columns present",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "item_features: not empty",
+      "status": "pass",
+      "severity": "critical",
+      "detail": "30 rows"
+    },
+    {
+      "check": "interactions: required columns present",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions: not empty",
+      "status": "pass",
+      "severity": "critical",
+      "detail": "500 rows"
+    },
+    {
+      "check": "user_features.age: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "user_features.gender: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "user_features.occupation: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "user_features.user_id: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "user_features.zip_code: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "item_features.category: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "item_features.item_id: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "item_features.price: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "item_features.rating: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "item_features.title: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.item_id: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.partition_date: NULLs <= 5%",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "interactions.rating: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.timestamp: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.user_id: no NULLs",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "user_features.user_id: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "user_features.age: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "item_features.item_id: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "item_features.price: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "item_features.rating: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.user_id: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.item_id: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.rating: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.timestamp: numeric values only",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.rating: within [0.5, 5.0]",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "interactions.timestamp: within [1, None]",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "user_features.age: within [1, 110]",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "item_features.price: within [0, None]",
+      "status": "pass",
+      "severity": "critical",
+      "detail": ""
+    },
+    {
+      "check": "item_features.rating: within [0, 5.0]",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "interactions.timestamp: not in the future",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "interactions: one rating per (user, item)",
+      "status": "warn",
+      "severity": "warning",
+      "detail": "74 user-item pairs rated more than once"
+    },
+    {
+      "check": "interactions.user_id: exists in user_features",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    },
+    {
+      "check": "interactions.item_id: exists in item_features",
+      "status": "pass",
+      "severity": "warning",
+      "detail": ""
+    }
+  ]
+}
