@@ -56,6 +56,9 @@ def ingest_data():
         cursor.executescript(f.read())
     print("[INFO] SQLite schema initialized successfully.")
 
+    # Clear child table first so the reload is idempotent on reruns
+    cursor.executescript("DELETE FROM interactions; DELETE FROM user_features; DELETE FROM item_features;")
+
     # 1. Ingest User Features
     for file in glob.glob("data/raw/users/date=*/*.csv"):
         df = pd.read_csv(file)

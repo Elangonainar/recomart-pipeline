@@ -1,0 +1,11 @@
+.git
+.dvc
+.dvcignore
+.DS_Store
+logs/
+mlruns/
+__pycache__/
+*.pyc
+data/recomart.db
+data/processed/
+data/reports/

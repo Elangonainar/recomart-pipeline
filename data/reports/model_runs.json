@@ -1,0 +1,68 @@
+{
+  "tracking_uri": "http://localhost:5000",
+  "experiment": "recomart-recommendation",
+  "runs": [
+    {
+      "model": "baseline_global_mean",
+      "run_id": "f68d19f7a9864fbfb08618a543d417cd",
+      "params": {
+        "train_rows": 334,
+        "test_rows": 84,
+        "split": "time",
+        "train_quantile": 0.8,
+        "train_cutoff_ts": 1730491708.6,
+        "feature_set": "rating_prediction_v1",
+        "feature_version": 2
+      },
+      "metrics": {
+        "rmse": 1.1451129912246243,
+        "mae": 0.9071143427430851
+      }
+    },
+    {
+      "model": "content_based",
+      "run_id": "1cda690a6c884d48a616f9d5d5932607",
+      "params": {
+        "top_k": 5,
+        "train_rows": 334,
+        "test_rows": 84,
+        "split": "time",
+        "train_quantile": 0.8,
+        "train_cutoff_ts": 1730491708.6,
+        "feature_set": "rating_prediction_v1",
+        "feature_version": 2
+      },
+      "metrics": {
+        "rmse": 1.3589825564318176,
+        "mae": 1.0782845144040025,
+        "precision_at_5": 0.0787878787878788,
+        "recall_at_5": 0.2398989898989899,
+        "ranking_users": 33
+      }
+    },
+    {
+      "model": "matrix_factorization_svd",
+      "run_id": "f1bbd887502d4491b915516f72f1ae67",
+      "params": {
+        "n_factors": 8,
+        "learning_rate": 0.01,
+        "reg": 0.05,
+        "epochs": 200,
+        "train_rows": 334,
+        "test_rows": 84,
+        "split": "time",
+        "train_quantile": 0.8,
+        "train_cutoff_ts": 1730491708.6,
+        "feature_set": "rating_prediction_v1",
+        "feature_version": 2
+      },
+      "metrics": {
+        "rmse": 1.421335808768251,
+        "mae": 1.1142928221296282,
+        "precision_at_5": 0.1272727272727273,
+        "recall_at_5": 0.37878787878787873,
+        "ranking_users": 33
+      }
+    }
+  ]
+}

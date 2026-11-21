@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-11-21T19:31:01.324052+00:00",
+  "global_mean_rating": 3.791866,
+  "user_feature_rows": 50,
+  "item_feature_rows": 30,
+  "item_similarity_rows": 302,
+  "items_with_neighbors": 30,
+  "parameters": {
+    "bayes_prior_weight": 5,
+    "top_k_neighbors": 20,
+    "min_co_occurrence": 2
+  },
+  "tables": [
+    "user_feature_store",
+    "item_feature_store",
+    "item_similarity"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-11-21T19:30:57.577299+00:00",
+  "outputs": {
+    "users": "data/processed/users_prepared.csv",
+    "items": "data/processed/items_prepared.csv",
+    "interactions_observed": "data/processed/interactions_observed_prepared.csv",
+    "interactions_dense": "data/processed/interactions_prepared.csv",
+    "plots": [
+      "data/reports/eda/rating_distribution.png",
+      "data/reports/eda/item_popularity.png",
+      "data/reports/eda/interaction_sparsity_heatmap.png"
+    ]
+  },
+  "summary": {
+    "interactions_raw_rows": 500,
+    "interactions_after_dedup_rows": 418,
+    "users": 50,
+    "items": 30,
+    "all_user_item_pairs": 1500,
+    "observed_pairs": 418,
+    "missing_pairs_imputed": 1082,
+    "sparsity_before_imputation": 0.721333
+  }
+}
