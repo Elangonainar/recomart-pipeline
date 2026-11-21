@@ -10,8 +10,8 @@ stages:
       nfiles: 3
     - path: ingest.py
       hash: md5
-      md5: 9071207df97522ebad381ee68ff10c39
-      size: 2754
+      md5: 7fea2a88071113404984332e8ed2275a
+      size: 2931
     - path: schema.sql
       hash: md5
       md5: b2094acc47fd7b25bcc317386193d84a
@@ -19,14 +19,14 @@ stages:
     outs:
     - path: data/recomart.db
       hash: md5
-      md5: e1eac2d557287e25c1f2e1c1d3ec0383
+      md5: 13199e7f35bac0167ea26fef80d230af
       size: 90112
   validate:
     cmd: python3 validation.py
     deps:
     - path: data/recomart.db
       hash: md5
-      md5: e1eac2d557287e25c1f2e1c1d3ec0383
+      md5: 13199e7f35bac0167ea26fef80d230af
       size: 90112
     - path: validation.py
       hash: md5
@@ -35,14 +35,14 @@ stages:
     outs:
     - path: data/reports/validation.json
       hash: md5
-      md5: e261f11fcfda6d408b74ea37e0215be3
+      md5: 9f818a81fd4df5f2bf30048181f62a83
       size: 5984
   prepare:
     cmd: python3 preparation.py
     deps:
     - path: data/recomart.db
       hash: md5
-      md5: e1eac2d557287e25c1f2e1c1d3ec0383
+      md5: 13199e7f35bac0167ea26fef80d230af
       size: 90112
     - path: preparation.py
       hash: md5
@@ -59,11 +59,11 @@ stages:
       size: 123238
     - path: data/processed/items_prepared.csv
       hash: md5
-      md5: 5c508017fa71afbe9773665c47b3d8f6
+      md5: 97a9062f76e6866cd046f47d517ee1e2
       size: 2881
     - path: data/processed/users_prepared.csv
       hash: md5
-      md5: 59f88b2a45144f14c0b91323dbdfbdda
+      md5: 9ab65a9eb880d3076a596489c8859050
       size: 3259
     - path: data/reports/eda/interaction_sparsity_heatmap.png
       hash: md5
@@ -79,7 +79,7 @@ stages:
       size: 26103
     - path: data/reports/preparation_summary.json
       hash: md5
-      md5: 1045aa3925f0c0ac861d321ee7e9482a
+      md5: 6018c0f067106f8b4f110265c38c64bf
       size: 771
   transform:
     cmd: python3 transformation.py
@@ -90,15 +90,15 @@ stages:
       size: 34263
     - path: data/processed/items_prepared.csv
       hash: md5
-      md5: 5c508017fa71afbe9773665c47b3d8f6
+      md5: 97a9062f76e6866cd046f47d517ee1e2
       size: 2881
     - path: data/processed/users_prepared.csv
       hash: md5
-      md5: 59f88b2a45144f14c0b91323dbdfbdda
+      md5: 9ab65a9eb880d3076a596489c8859050
       size: 3259
     - path: data/recomart.db
       hash: md5
-      md5: 59e16a6f469d71ef2bc4d3b0bfdeb566
+      md5: 2c4b01f22c13d86258cc4721f398e575
       size: 147456
     - path: feature_schema.sql
       hash: md5
@@ -106,23 +106,23 @@ stages:
       size: 2448
     - path: transformation.py
       hash: md5
-      md5: e4e8c357acad59b7c9141874f4688554
-      size: 11462
+      md5: 62b6f8f50da8a35bf9794b0840d190a8
+      size: 11825
     outs:
     - path: data/reports/feature_summary.json
       hash: md5
-      md5: 68aae9188a30df83ed745489a632918c
+      md5: efd713437ce1f3a60212d67c786c13c4
       size: 404
   feature_store:
     cmd: python3 feature_store.py materialize
     deps:
     - path: data/recomart.db
       hash: md5
-      md5: f8e59af0e90e8aff3af48f02ba4b3e93
+      md5: 79a12b2c8fff25fca64a226aeb387146
       size: 208896
     - path: data/reports/feature_summary.json
       hash: md5
-      md5: 68aae9188a30df83ed745489a632918c
+      md5: efd713437ce1f3a60212d67c786c13c4
       size: 404
     - path: feature_store.py
       hash: md5
@@ -141,18 +141,38 @@ stages:
       size: 34263
     - path: data/processed/items_prepared.csv
       hash: md5
-      md5: 5c508017fa71afbe9773665c47b3d8f6
+      md5: 97a9062f76e6866cd046f47d517ee1e2
       size: 2881
+    - path: data/processed/users_prepared.csv
+      hash: md5
+      md5: 9ab65a9eb880d3076a596489c8859050
+      size: 3259
+    - path: feature_schema.sql
+      hash: md5
+      md5: beb908c060207246f2f4e8dfee4200c0
+      size: 2448
+    - path: feature_store.py
+      hash: md5
+      md5: f48df908a5adc8fc19ed7b0675c998b5
+      size: 30866
+    - path: feature_store_schema.sql
+      hash: md5
+      md5: e982859729ff991bed9776826b38da6b
+      size: 3389
     - path: train_models.py
       hash: md5
-      md5: bbd3e07c07614c81e5b1cac49b8ed9cb
-      size: 8894
+      md5: 970e8e1e7c7ea597ca2c928474a15b50
+      size: 10531
+    - path: transformation.py
+      hash: md5
+      md5: 62b6f8f50da8a35bf9794b0840d190a8
+      size: 11825
     outs:
     - path: data/reports/model_performance.md
       hash: md5
-      md5: 23adf1c2ad147400e249ad1be30b1801
-      size: 622
+      md5: e32ed25a0dc827126616c86a8601feb3
+      size: 821
     - path: data/reports/model_runs.json
       hash: md5
-      md5: 33715ede5a4ea6c6ae4570e1c714a020
-      size: 1454
+      md5: 4ac3c21d6ea2821989b95cad637374b5
+      size: 1832

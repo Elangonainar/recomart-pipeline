@@ -110,13 +110,13 @@ docker exec recomart-app airflow tasks states-for-dag-run recomart_ingest_pipeli
 Implemented file: `train_models.py`
 
 What it does:
-- Reads `data/processed/interactions_observed_prepared.csv` (observed ratings only, so imputed ratings never reach training or evaluation) and `data/processed/items_prepared.csv`
-- Splits interactions 80/20 with a fixed seed
+- Reads ratings from the feature store and splits them by time: the first 80% of ratings (by timestamp) train, the rest test
+- Builds a training-window feature version from ratings up to the cutoff only (inactive, so serving keeps using the full-data version). Training rows and item features come from that version; test rows are the later ratings from `data/processed/interactions_observed_prepared.csv`. A user-item pair is never in both sets.
 - Trains and evaluates three models:
    - `baseline_global_mean`: predicts the training mean rating
-   - `content_based`: predicts a rating as a similarity-weighted average of the user's training ratings, using item category, price, and catalog rating
-   - `matrix_factorization_svd`: biased matrix factorization trained with SGD
-- Logs parameters, metrics, and run IDs to MLflow (experiment `recomart-recommendation`)
+   - `content_based`: predicts a rating as a similarity-weighted average of the user's training ratings, using item category, price, and catalog rating from the feature store
+   - `matrix_factorization_svd`: biased matrix factorization trained with SGD (uses user and item IDs and ratings only)
+- Logs parameters (including the cutoff and feature version), metrics, and run IDs to MLflow (experiment `recomart-recommendation`)
 
 Metrics: RMSE and MAE for all models; Precision@5 and Recall@5 for the two recommenders (test ratings >= 4 count as relevant).
 

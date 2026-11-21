@@ -6,42 +6,54 @@ import mlflow
 import numpy as np
 import pandas as pd
 
+from feature_store import FeatureStore
+from transformation import transform_data
+
 INTERACTIONS_PATH = "data/processed/interactions_observed_prepared.csv"
 ITEMS_PATH = "data/processed/items_prepared.csv"
 REPORT_DIR = "data/reports"
 EXPERIMENT_NAME = "recomart-recommendation"
 DEFAULT_TRACKING_URI = "http://localhost:5000"
+FEATURE_SET = "rating_prediction_v1"
+ITEM_FEATURES = ["category_encoded", "price_norm", "catalog_rating_norm"]
 SEED = 42
-TEST_FRACTION = 0.2
+TRAIN_QUANTILE = 0.8  # the first 80% of ratings (by time) train; the rest test
 TOP_K = 5
 RELEVANT_RATING = 4.0
 MF_PARAMS = {"n_factors": 8, "learning_rate": 0.01, "reg": 0.05, "epochs": 200}
 
 
-def load_data():
-    interactions = pd.read_csv(INTERACTIONS_PATH)[["user_id", "item_id", "rating"]]
-    items = pd.read_csv(ITEMS_PATH)
-    return interactions, items
+def time_split(interactions):
+    """Cutoff at the TRAIN_QUANTILE timestamp. Train = ratings up to it, test = ratings after it."""
+    cutoff = float(interactions["timestamp"].quantile(TRAIN_QUANTILE))
+    test = interactions[interactions["timestamp"] > cutoff].reset_index(drop=True)
+    return cutoff, test
 
 
-def split_interactions(interactions):
-    rng = np.random.default_rng(SEED)
-    order = rng.permutation(len(interactions))
-    n_test = int(round(len(interactions) * TEST_FRACTION))
-    test = interactions.iloc[order[:n_test]].reset_index(drop=True)
-    train = interactions.iloc[order[n_test:]].reset_index(drop=True)
-    return train, test
+def materialize_train_window(cutoff):
+    """Build a feature version from ratings up to the cutoff only, without making it active.
+
+    Serving tables are rebuilt from all data afterwards, so the store's active version
+    and the database state match what the DAG produced before training.
+    """
+    transform_data(cutoff_ts=cutoff)
+    try:
+        result = FeatureStore().materialize(
+            description=f"training window: ratings up to {cutoff:.0f}", activate=False)
+    finally:
+        transform_data()
+    return result["version_id"]
 
 
-def build_item_similarity(items):
-    categories = pd.get_dummies(items["category"], prefix="cat", dtype=float)
+def build_item_similarity(item_features):
+    categories = pd.get_dummies(item_features["category_encoded"], prefix="cat", dtype=float)
     features = pd.concat(
-        [categories, items[["price_norm", "catalog_rating_norm"]].astype(float)], axis=1
+        [categories, item_features[["price_norm", "catalog_rating_norm"]].astype(float)], axis=1
     ).to_numpy()
     norms = np.linalg.norm(features, axis=1, keepdims=True)
     features = features / np.where(norms == 0, 1, norms)
     similarity = np.clip(features @ features.T, 0, None)
-    item_index = {item_id: pos for pos, item_id in enumerate(items["item_id"])}
+    item_index = {item_id: pos for pos, item_id in enumerate(item_features["item_id"])}
     return item_index, similarity
 
 
@@ -154,7 +166,7 @@ def evaluate(model, train, test, catalog_ids, ranking):
     return metrics
 
 
-def write_report(results, tracking_uri):
+def write_report(results, tracking_uri, split_description):
     os.makedirs(REPORT_DIR, exist_ok=True)
     with open(os.path.join(REPORT_DIR, "model_runs.json"), "w") as f:
         json.dump({"tracking_uri": tracking_uri, "experiment": EXPERIMENT_NAME, "runs": results}, f, indent=2)
@@ -177,7 +189,7 @@ def write_report(results, tracking_uri):
         lines.append(f"| {result['model']} | " + " | ".join(values) + f" | `{result['run_id']}` |")
     lines += [
         "",
-        f"Split: {TEST_FRACTION:.0%} test, seed {SEED}. Ranking metrics use top-{TOP_K} "
+        f"{split_description} Ranking metrics use top-{TOP_K} "
         f"recommendations and treat test ratings >= {RELEVANT_RATING} as relevant.",
     ]
     with open(os.path.join(REPORT_DIR, "model_performance.md"), "w") as f:
@@ -189,10 +201,24 @@ def main():
     mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(EXPERIMENT_NAME)
 
-    interactions, items = load_data()
-    train, test = split_interactions(interactions)
-    catalog_ids = items["item_id"].tolist()
-    item_index, item_similarity = build_item_similarity(items)
+    interactions = pd.read_csv(INTERACTIONS_PATH)
+    cutoff, test = time_split(interactions)
+    version = materialize_train_window(cutoff)
+
+    store = FeatureStore()
+    train = store.get_training_dataset(FEATURE_SET, version=version)
+    # Keep the same rows as the split: the latest rating per pair, and only if it is before the cutoff.
+    train = train.merge(
+        interactions.loc[interactions["timestamp"] <= cutoff, ["user_id", "item_id", "timestamp"]],
+        on=["user_id", "item_id", "timestamp"], how="inner")
+    catalog_ids = pd.read_csv(ITEMS_PATH)["item_id"].tolist()
+    item_features = store.get_entity_features("item", catalog_ids, features=ITEM_FEATURES, version=version)
+    item_index, item_similarity = build_item_similarity(item_features)
+    split_description = (
+        f"Time split: ratings up to {cutoff:.0f} (the {TRAIN_QUANTILE:.0%} quantile of timestamps) train, "
+        f"later ratings test. Training rows and item features come from feature version {version}, "
+        f"which only uses ratings up to the cutoff."
+    )
 
     candidates = [
         ("baseline_global_mean", GlobalMeanModel(train), {}, False),
@@ -207,8 +233,11 @@ def main():
             **model_params,
             "train_rows": len(train),
             "test_rows": len(test),
-            "split_seed": SEED,
-            "test_fraction": TEST_FRACTION,
+            "split": "time",
+            "train_quantile": TRAIN_QUANTILE,
+            "train_cutoff_ts": cutoff,
+            "feature_set": FEATURE_SET,
+            "feature_version": version,
         }
         with mlflow.start_run(run_name=name) as run:
             mlflow.log_params(params)
@@ -218,7 +247,7 @@ def main():
         results.append({"model": name, "run_id": run_id, "params": params, "metrics": metrics})
         print(f"{name}: {metrics} run_id={run_id}")
 
-    write_report(results, tracking_uri)
+    write_report(results, tracking_uri, split_description)
 
 
 if __name__ == "__main__":

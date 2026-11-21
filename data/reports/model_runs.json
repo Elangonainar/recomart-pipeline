@@ -1,42 +1,48 @@
 {
-  "tracking_uri": "http://localhost:5000",
+  "tracking_uri": "sqlite:////tmp/recomart_mlflow_test.db",
   "experiment": "recomart-recommendation",
   "runs": [
     {
       "model": "baseline_global_mean",
-      "run_id": "c566665fb0b843dcacb0091be494f2ca",
+      "run_id": "b141754baff64ba2a5d858c9f5c1802f",
       "params": {
         "train_rows": 334,
         "test_rows": 84,
-        "split_seed": 42,
-        "test_fraction": 0.2
+        "split": "time",
+        "train_quantile": 0.8,
+        "train_cutoff_ts": 1730491708.6,
+        "feature_set": "rating_prediction_v1",
+        "feature_version": 2
       },
       "metrics": {
-        "rmse": 1.0199064395515924,
-        "mae": 0.8445252352437982
+        "rmse": 1.1451129912246243,
+        "mae": 0.9071143427430851
       }
     },
     {
       "model": "content_based",
-      "run_id": "25a93c925e014a549ded0f2d98483a52",
+      "run_id": "5292338ebbee471fb717b6df56b68c23",
       "params": {
         "top_k": 5,
         "train_rows": 334,
         "test_rows": 84,
-        "split_seed": 42,
-        "test_fraction": 0.2
+        "split": "time",
+        "train_quantile": 0.8,
+        "train_cutoff_ts": 1730491708.6,
+        "feature_set": "rating_prediction_v1",
+        "feature_version": 2
       },
       "metrics": {
-        "rmse": 1.3011143094209383,
-        "mae": 1.0317202468467406,
-        "precision_at_5": 0.09142857142857143,
-        "recall_at_5": 0.2357142857142857,
-        "ranking_users": 35
+        "rmse": 1.3589825564318176,
+        "mae": 1.0782845144040025,
+        "precision_at_5": 0.0787878787878788,
+        "recall_at_5": 0.2398989898989899,
+        "ranking_users": 33
       }
     },
     {
       "model": "matrix_factorization_svd",
-      "run_id": "acf08842cf2a480ebbec2e8392a60b40",
+      "run_id": "726edd4e427a4258af93ac7bb6c447e2",
       "params": {
         "n_factors": 8,
         "learning_rate": 0.01,
@@ -44,15 +50,18 @@
         "epochs": 200,
         "train_rows": 334,
         "test_rows": 84,
-        "split_seed": 42,
-        "test_fraction": 0.2
+        "split": "time",
+        "train_quantile": 0.8,
+        "train_cutoff_ts": 1730491708.6,
+        "feature_set": "rating_prediction_v1",
+        "feature_version": 2
       },
       "metrics": {
-        "rmse": 1.4137559967945243,
-        "mae": 1.0716871152061545,
-        "precision_at_5": 0.0742857142857143,
-        "recall_at_5": 0.2357142857142857,
-        "ranking_users": 35
+        "rmse": 1.421335808768251,
+        "mae": 1.1142928221296284,
+        "precision_at_5": 0.1272727272727273,
+        "recall_at_5": 0.37878787878787873,
+        "ranking_users": 33
       }
     }
   ]

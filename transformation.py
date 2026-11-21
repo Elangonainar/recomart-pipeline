@@ -207,7 +207,8 @@ def replace_table(conn: sqlite3.Connection, table: str, df: pd.DataFrame) -> Non
     )
 
 
-def transform_data() -> dict:
+def transform_data(cutoff_ts: float = None) -> dict:
+    """Build the feature tables. With `cutoff_ts`, only interactions at or before it are used."""
     for path in (USERS_IN, ITEMS_IN, INTERACTIONS_IN):
         if not os.path.exists(path):
             raise FileNotFoundError(f"{path} not found. Run the preparation step first.")
@@ -217,6 +218,10 @@ def transform_data() -> dict:
     interactions = pd.read_csv(INTERACTIONS_IN, usecols=["user_id", "item_id", "rating", "timestamp"])
     if interactions.empty:
         raise ValueError(f"{INTERACTIONS_IN} has no rows; nothing to build features from.")
+    if cutoff_ts is not None:
+        interactions = interactions[interactions["timestamp"] <= cutoff_ts].reset_index(drop=True)
+        if interactions.empty:
+            raise ValueError(f"No interactions at or before cutoff {cutoff_ts}.")
 
     log.info("Building features from %d users, %d items, %d interactions",
              len(users), len(items), len(interactions))
