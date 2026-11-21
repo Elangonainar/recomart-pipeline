@@ -66,11 +66,15 @@ import sys
 sys.path.append('/app')
 from ingest import ingest_data
 from validation import validate_data
+<<<<<<< HEAD
 from preparation import prepare_data  # change "preparation" if your file has a different name
 from transformation import transform_data
 from feature_store import materialize_feature_store
 
     
+=======
+from preparation import prepare_data
+>>>>>>> origin/main
 
 default_args = {
     'owner': 'airflow',
@@ -90,11 +94,16 @@ with DAG(
     )
 
     run_validation = PythonOperator(
+<<<<<<< HEAD
         task_id='validate_data',
+=======
+        task_id='validate_ingested_data',
+>>>>>>> origin/main
         python_callable=validate_data,
     )
 
     run_preparation = PythonOperator(
+<<<<<<< HEAD
         task_id='prepare_data',
         python_callable=prepare_data,
     )
@@ -111,3 +120,10 @@ with DAG(
     # Each step only runs if the previous one succeeds; modeling will be
     # chained after run_transformation the same way.
     run_ingestion >> run_validation >> run_preparation >> run_transformation >> run_feature_store
+=======
+        task_id='prepare_and_eda',
+        python_callable=prepare_data,
+    )
+
+    run_ingestion >> run_validation >> run_preparation
+>>>>>>> origin/main

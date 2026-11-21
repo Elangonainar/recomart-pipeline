@@ -27,12 +27,17 @@
 --     FOREIGN KEY (item_id) REFERENCES item_features(item_id)
 -- );
 -- RecoMart schema
+<<<<<<< HEAD
 -- Safe to run on every task: CREATE ... IF NOT EXISTS never alters existing tables,
 -- so delete data/recomart.db once after changing an existing table definition.
 
 -- =====================================================================
 -- Raw tables (loaded by ingest.py)
 -- =====================================================================
+=======
+-- Safe to run on every ingestion: CREATE ... IF NOT EXISTS never alters existing tables,
+-- so delete data/recomart.db once after changing any table definition below.
+>>>>>>> origin/main
 
 CREATE TABLE IF NOT EXISTS user_features (
     user_id     INTEGER PRIMARY KEY,
@@ -65,6 +70,7 @@ CREATE TABLE IF NOT EXISTS interactions (
     FOREIGN KEY (item_id) REFERENCES item_features(item_id)
 );
 
+<<<<<<< HEAD
 CREATE INDEX IF NOT EXISTS idx_interactions_user ON interactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_interactions_item ON interactions(item_id);
 
@@ -115,3 +121,8 @@ CREATE TABLE IF NOT EXISTS feat_item_similarity (
     computed_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (item_id, similar_item_id)
 );
+=======
+-- Speeds up per-user / per-item lookups during EDA and feature engineering
+CREATE INDEX IF NOT EXISTS idx_interactions_user ON interactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_interactions_item ON interactions(item_id);
+>>>>>>> origin/main

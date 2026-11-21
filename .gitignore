@@ -1,7 +1,10 @@
 data/*.db
 data/reports/
+<<<<<<< HEAD
 data/
 logs/
 __pycache__/
 *.pyc
 *.db
+=======
+>>>>>>> origin/main
