@@ -7,3 +7,26 @@ stages:
       - data/raw/
     outs:
       - data/recomart.db
+
+  validate:
+    cmd: python validation.py
+    deps:
+      - validation.py
+      - data/recomart.db
+    outs:
+      - data/reports/validation.json
+
+  prepare:
+    cmd: python preparation.py
+    deps:
+      - preparation.py
+      - data/recomart.db
+    outs:
+      - data/processed/users_prepared.csv
+      - data/processed/items_prepared.csv
+      - data/processed/interactions_observed_prepared.csv
+      - data/processed/interactions_prepared.csv
+      - data/reports/eda/rating_distribution.png
+      - data/reports/eda/item_popularity.png
+      - data/reports/eda/interaction_sparsity_heatmap.png
+      - data/reports/preparation_summary.json

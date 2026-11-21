@@ -1,0 +1,10 @@
+2026-11-21 15:29:48,324 | INFO | Starting data preparation
+2026-11-21 15:29:48,914 | INFO | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-21 15:29:48,916 | INFO | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-21 15:29:49,196 | INFO | Data preparation completed successfully
+2026-11-21 15:29:49,196 | INFO | Summary: {'interactions_raw_rows': 500, 'interactions_after_dedup_rows': 418, 'users': 50, 'items': 30, 'all_user_item_pairs': 1500, 'observed_pairs': 418, 'missing_pairs_imputed': 1082, 'sparsity_before_imputation': 0.721333}
+2026-11-21 15:30:15,590 | INFO | Starting data preparation
+2026-11-21 15:30:15,950 | INFO | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-21 15:30:15,952 | INFO | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-21 15:30:16,202 | INFO | Data preparation completed successfully
+2026-11-21 15:30:16,202 | INFO | Summary: {'interactions_raw_rows': 500, 'interactions_after_dedup_rows': 418, 'users': 50, 'items': 30, 'all_user_item_pairs': 1500, 'observed_pairs': 418, 'missing_pairs_imputed': 1082, 'sparsity_before_imputation': 0.721333}
