@@ -1,6 +1,6 @@
 stages:
   ingest:
-    cmd: python ingest.py
+    cmd: python3 ingest.py
     deps:
       - schema.sql
       - ingest.py
@@ -9,7 +9,7 @@ stages:
       - data/recomart.db
 
   validate:
-    cmd: python validation.py
+    cmd: python3 validation.py
     deps:
       - validation.py
       - data/recomart.db
@@ -17,7 +17,7 @@ stages:
       - data/reports/validation.json
 
   prepare:
-    cmd: python preparation.py
+    cmd: python3 preparation.py
     deps:
       - preparation.py
       - data/recomart.db
@@ -30,3 +30,33 @@ stages:
       - data/reports/eda/item_popularity.png
       - data/reports/eda/interaction_sparsity_heatmap.png
       - data/reports/preparation_summary.json
+
+  transform:
+    cmd: python3 transformation.py
+    deps:
+      - transformation.py
+      - feature_schema.sql
+      - data/recomart.db
+      - data/processed/users_prepared.csv
+      - data/processed/items_prepared.csv
+      - data/processed/interactions_observed_prepared.csv
+    outs:
+      - data/reports/feature_summary.json
+
+  feature_store:
+    cmd: python3 feature_store.py materialize
+    deps:
+      - feature_store.py
+      - feature_store_schema.sql
+      - data/recomart.db
+      - data/reports/feature_summary.json
+
+  train:
+    cmd: python3 train_models.py
+    deps:
+      - train_models.py
+      - data/processed/items_prepared.csv
+      - data/processed/interactions_observed_prepared.csv
+    outs:
+      - data/reports/model_runs.json
+      - data/reports/model_performance.md
