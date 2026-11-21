@@ -1,10 +1,10 @@
 {
-  "tracking_uri": "file:./mlruns",
+  "tracking_uri": "http://localhost:5000",
   "experiment": "recomart-recommendation",
   "runs": [
     {
       "model": "baseline_global_mean",
-      "run_id": "c3479aed58614cdf97996cf19190c5fd",
+      "run_id": "c566665fb0b843dcacb0091be494f2ca",
       "params": {
         "train_rows": 334,
         "test_rows": 84,
@@ -18,7 +18,7 @@
     },
     {
       "model": "content_based",
-      "run_id": "a817d0af2b8746adad7a505a140d17f5",
+      "run_id": "25a93c925e014a549ded0f2d98483a52",
       "params": {
         "top_k": 5,
         "train_rows": 334,
@@ -36,7 +36,7 @@
     },
     {
       "model": "matrix_factorization_svd",
-      "run_id": "11f0583f8d944af29808aaa7bc31a9ff",
+      "run_id": "acf08842cf2a480ebbec2e8392a60b40",
       "params": {
         "n_factors": 8,
         "learning_rate": 0.01,
