@@ -1,10 +1,10 @@
 {
-  "tracking_uri": "sqlite:////tmp/recomart_mlflow_test.db",
+  "tracking_uri": "http://localhost:5000",
   "experiment": "recomart-recommendation",
   "runs": [
     {
       "model": "baseline_global_mean",
-      "run_id": "b141754baff64ba2a5d858c9f5c1802f",
+      "run_id": "f68d19f7a9864fbfb08618a543d417cd",
       "params": {
         "train_rows": 334,
         "test_rows": 84,
@@ -21,7 +21,7 @@
     },
     {
       "model": "content_based",
-      "run_id": "5292338ebbee471fb717b6df56b68c23",
+      "run_id": "1cda690a6c884d48a616f9d5d5932607",
       "params": {
         "top_k": 5,
         "train_rows": 334,
@@ -42,7 +42,7 @@
     },
     {
       "model": "matrix_factorization_svd",
-      "run_id": "726edd4e427a4258af93ac7bb6c447e2",
+      "run_id": "f1bbd887502d4491b915516f72f1ae67",
       "params": {
         "n_factors": 8,
         "learning_rate": 0.01,
@@ -58,7 +58,7 @@
       },
       "metrics": {
         "rmse": 1.421335808768251,
-        "mae": 1.1142928221296284,
+        "mae": 1.1142928221296282,
         "precision_at_5": 0.1272727272727273,
         "recall_at_5": 0.37878787878787873,
         "ranking_users": 33

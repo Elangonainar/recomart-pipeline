@@ -96,10 +96,6 @@ stages:
       hash: md5
       md5: 9ab65a9eb880d3076a596489c8859050
       size: 3259
-    - path: data/recomart.db
-      hash: md5
-      md5: 2c4b01f22c13d86258cc4721f398e575
-      size: 147456
     - path: feature_schema.sql
       hash: md5
       md5: beb908c060207246f2f4e8dfee4200c0
@@ -111,18 +107,14 @@ stages:
     outs:
     - path: data/reports/feature_summary.json
       hash: md5
-      md5: efd713437ce1f3a60212d67c786c13c4
+      md5: 0c6c403a2a3abe6a6393809b43bd011b
       size: 404
   feature_store:
     cmd: python3 feature_store.py materialize
     deps:
-    - path: data/recomart.db
-      hash: md5
-      md5: 79a12b2c8fff25fca64a226aeb387146
-      size: 208896
     - path: data/reports/feature_summary.json
       hash: md5
-      md5: efd713437ce1f3a60212d67c786c13c4
+      md5: 0c6c403a2a3abe6a6393809b43bd011b
       size: 404
     - path: feature_store.py
       hash: md5
@@ -147,6 +139,10 @@ stages:
       hash: md5
       md5: 9ab65a9eb880d3076a596489c8859050
       size: 3259
+    - path: data/recomart.db
+      hash: md5
+      md5: 355e7f624197ebb2f12f760acb286d34
+      size: 253952
     - path: feature_schema.sql
       hash: md5
       md5: beb908c060207246f2f4e8dfee4200c0
@@ -170,9 +166,9 @@ stages:
     outs:
     - path: data/reports/model_performance.md
       hash: md5
-      md5: e32ed25a0dc827126616c86a8601feb3
+      md5: 69736113bbb0174f4d96fc983968f8cc
       size: 821
     - path: data/reports/model_runs.json
       hash: md5
-      md5: 4ac3c21d6ea2821989b95cad637374b5
+      md5: 596e565dfb69b34152ab211f043a364b
       size: 1832

@@ -6,7 +6,8 @@ stages:
       - ingest.py
       - data/raw/
     outs:
-      - data/recomart.db
+      - data/recomart.db:
+          cache: false
 
   validate:
     cmd: python3 validation.py
@@ -45,7 +46,6 @@ stages:
     deps:
       - transformation.py
       - feature_schema.sql
-      - data/recomart.db
       - data/processed/users_prepared.csv
       - data/processed/items_prepared.csv
       - data/processed/interactions_observed_prepared.csv
@@ -58,7 +58,6 @@ stages:
     deps:
       - feature_store.py
       - feature_store_schema.sql
-      - data/recomart.db
       - data/reports/feature_summary.json
 
   train:
