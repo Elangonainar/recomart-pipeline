@@ -2,6 +2,33 @@
 
 A self-contained, containerized data pipeline for **RecoMart** utilizing SQLite, MovieLens interaction logs, partitioned CSV files (`date=YYYY-MM-DD/`), DVC versioning, and Apache Airflow.
 
+## Architecture
+
+```
+data/raw/*.csv (date partitions)
+   │
+   ▼
+ingest.py ──────────► data/recomart.db (SQLite)
+   │
+   ▼
+validation.py ──────► data/reports/validation.json
+   │
+   ▼
+preparation.py ─────► data/processed/*.csv, EDA plots
+   │
+   ▼
+transformation.py ──► serving tables + feature_summary.json
+   │
+   ▼
+feature_store.py ───► versioned feature sets (in recomart.db)
+   │
+   ▼
+train_models.py ────► MLflow (port 5000) + model_performance.md
+
+Orchestration: Airflow DAG `recomart_ingest_pipeline` (port 8080)
+Versioning:    DVC (dvc.yaml / dvc.lock)
+Runtime:       single Docker container
+
 ## Project Structure
 ```text
 recomart-pipeline/

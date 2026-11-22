@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "generated_at": "2026-11-21T19:30:57.577299+00:00",
+=======
+  "generated_at": "2026-11-22T13:07:32.280077+00:00",
+>>>>>>> Stashed changes
   "outputs": {
     "users": "data/processed/users_prepared.csv",
     "items": "data/processed/items_prepared.csv",

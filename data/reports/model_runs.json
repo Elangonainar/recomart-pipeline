@@ -4,7 +4,11 @@
   "runs": [
     {
       "model": "baseline_global_mean",
+<<<<<<< Updated upstream
       "run_id": "f68d19f7a9864fbfb08618a543d417cd",
+=======
+      "run_id": "9e156d6f0b0046cfb24bc2ecc48a33eb",
+>>>>>>> Stashed changes
       "params": {
         "train_rows": 334,
         "test_rows": 84,
@@ -21,7 +25,11 @@
     },
     {
       "model": "content_based",
+<<<<<<< Updated upstream
       "run_id": "1cda690a6c884d48a616f9d5d5932607",
+=======
+      "run_id": "a6199c426cca498da097e543cac014bc",
+>>>>>>> Stashed changes
       "params": {
         "top_k": 5,
         "train_rows": 334,
@@ -42,7 +50,11 @@
     },
     {
       "model": "matrix_factorization_svd",
+<<<<<<< Updated upstream
       "run_id": "f1bbd887502d4491b915516f72f1ae67",
+=======
+      "run_id": "279b8afac38244c09332cff920cdb2a6",
+>>>>>>> Stashed changes
       "params": {
         "n_factors": 8,
         "learning_rate": 0.01,
