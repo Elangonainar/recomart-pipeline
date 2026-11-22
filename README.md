@@ -34,7 +34,7 @@ recomart-pipeline/
 
 3. **Run Container:**
    ```bash
-   docker run -d -p 8080:8080 -v ./data:/app/data --name recomart-app recomart-single-container:latest
+   docker run -d -p 8080:8080 -p 5000:5000 -v ./data:/app/data --name recomart-app recomart-single-container:latest
    ```
 
 4. **check the docker is up by running below command you should see recomart-app with status Up:**
@@ -92,7 +92,7 @@ python preparation.py
 ```bash
 docker rm -f recomart-app || true
 docker build -t recomart-single-container:latest .
-docker run -d -p 8080:8080 -v ./data:/app/data --name recomart-app recomart-single-container:latest
+docker run -d -p 8080:8080 -p 5000:5000 -v ./data:/app/data --name recomart-app recomart-single-container:latest
 
 # Trigger DAG (ingest -> validation -> preparation)
 docker exec recomart-app airflow dags trigger recomart_ingest_pipeline
@@ -103,4 +103,40 @@ docker exec recomart-app airflow dags list-runs recomart_ingest_pipeline --no-ba
 # Validate task states
 RUN_ID=$(docker exec recomart-app airflow dags list-runs recomart_ingest_pipeline --no-backfill -o json | tail -n 1 | python -c "import sys,json; print(json.loads(sys.stdin.read())[0]['run_id'])")
 docker exec recomart-app airflow tasks states-for-dag-run recomart_ingest_pipeline "$RUN_ID"
+```
+
+## Model Training and Evaluation (Task 6)
+
+Implemented file: `train_models.py`
+
+What it does:
+- Reads ratings from the feature store and splits them by time: the first 80% of ratings (by timestamp) train, the rest test
+- Builds a training-window feature version from ratings up to the cutoff only (inactive, so serving keeps using the full-data version). Training rows and item features come from that version; test rows are the later ratings from `data/processed/interactions_observed_prepared.csv`. A user-item pair is never in both sets.
+- Trains and evaluates three models:
+   - `baseline_global_mean`: predicts the training mean rating
+   - `content_based`: predicts a rating as a similarity-weighted average of the user's training ratings, using item category, price, and catalog rating from the feature store
+   - `matrix_factorization_svd`: biased matrix factorization trained with SGD (uses user and item IDs and ratings only)
+- Logs parameters (including the cutoff and feature version), metrics, and run IDs to MLflow (experiment `recomart-recommendation`)
+
+Metrics: RMSE and MAE for all models; Precision@5 and Recall@5 for the two recommenders (test ratings >= 4 count as relevant).
+
+### Outputs
+- `train_models.py`
+- `data/reports/model_performance.md`: comparison table with run IDs
+- `data/reports/model_runs.json`: run IDs, parameters, and metrics
+
+### Run Task 6 in Docker
+The MLflow tracking server starts with the container on port 5000 (`-p 5000:5000`); its data is stored in `data/mlflow.db` and `data/mlartifacts/`.
+
+```bash
+docker exec recomart-app python train_models.py
+```
+
+Open the MLflow UI at `http://localhost:5000`.
+
+### Run Task 6 Locally
+Start an MLflow server, then run the script against it:
+```bash
+mlflow server --host 127.0.0.1 --port 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlartifacts &
+MLFLOW_TRACKING_URI=http://localhost:5000 python train_models.py
 ```

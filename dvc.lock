@@ -1,0 +1,174 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python3 ingest.py
+    deps:
+    - path: data/raw/
+      hash: md5
+      md5: c8bdb590bcaac02544283fa050056c2a.dir
+      size: 18729
+      nfiles: 3
+    - path: ingest.py
+      hash: md5
+      md5: 7fea2a88071113404984332e8ed2275a
+      size: 2931
+    - path: schema.sql
+      hash: md5
+      md5: b2094acc47fd7b25bcc317386193d84a
+      size: 5010
+    outs:
+    - path: data/recomart.db
+      hash: md5
+      md5: 13199e7f35bac0167ea26fef80d230af
+      size: 90112
+  validate:
+    cmd: python3 validation.py
+    deps:
+    - path: data/recomart.db
+      hash: md5
+      md5: 13199e7f35bac0167ea26fef80d230af
+      size: 90112
+    - path: validation.py
+      hash: md5
+      md5: 8a02e5300e5e644ee26c0e7533dfe63a
+      size: 9486
+    outs:
+    - path: data/reports/validation.json
+      hash: md5
+      md5: 9f818a81fd4df5f2bf30048181f62a83
+      size: 5984
+  prepare:
+    cmd: python3 preparation.py
+    deps:
+    - path: data/recomart.db
+      hash: md5
+      md5: 13199e7f35bac0167ea26fef80d230af
+      size: 90112
+    - path: preparation.py
+      hash: md5
+      md5: 2466b1e7a869cdff8e42282f32962b2a
+      size: 8773
+    outs:
+    - path: data/processed/interactions_observed_prepared.csv
+      hash: md5
+      md5: b868989e2631542f3bb350d5efe5546c
+      size: 34263
+    - path: data/processed/interactions_prepared.csv
+      hash: md5
+      md5: 4f0a52cd95938497cb654fb6928faba8
+      size: 123238
+    - path: data/processed/items_prepared.csv
+      hash: md5
+      md5: 97a9062f76e6866cd046f47d517ee1e2
+      size: 2881
+    - path: data/processed/users_prepared.csv
+      hash: md5
+      md5: 9ab65a9eb880d3076a596489c8859050
+      size: 3259
+    - path: data/reports/eda/interaction_sparsity_heatmap.png
+      hash: md5
+      md5: 5a5033e25138afca4c217d55eded5f4b
+      size: 35881
+    - path: data/reports/eda/item_popularity.png
+      hash: md5
+      md5: a4391ca87623e638e22728644c4ae304
+      size: 17278
+    - path: data/reports/eda/rating_distribution.png
+      hash: md5
+      md5: 518fe191d3f145f443fa250caa81c9be
+      size: 26103
+    - path: data/reports/preparation_summary.json
+      hash: md5
+      md5: 6018c0f067106f8b4f110265c38c64bf
+      size: 771
+  transform:
+    cmd: python3 transformation.py
+    deps:
+    - path: data/processed/interactions_observed_prepared.csv
+      hash: md5
+      md5: b868989e2631542f3bb350d5efe5546c
+      size: 34263
+    - path: data/processed/items_prepared.csv
+      hash: md5
+      md5: 97a9062f76e6866cd046f47d517ee1e2
+      size: 2881
+    - path: data/processed/users_prepared.csv
+      hash: md5
+      md5: 9ab65a9eb880d3076a596489c8859050
+      size: 3259
+    - path: feature_schema.sql
+      hash: md5
+      md5: beb908c060207246f2f4e8dfee4200c0
+      size: 2448
+    - path: transformation.py
+      hash: md5
+      md5: 62b6f8f50da8a35bf9794b0840d190a8
+      size: 11825
+    outs:
+    - path: data/reports/feature_summary.json
+      hash: md5
+      md5: 0c6c403a2a3abe6a6393809b43bd011b
+      size: 404
+  feature_store:
+    cmd: python3 feature_store.py materialize
+    deps:
+    - path: data/reports/feature_summary.json
+      hash: md5
+      md5: 0c6c403a2a3abe6a6393809b43bd011b
+      size: 404
+    - path: feature_store.py
+      hash: md5
+      md5: f48df908a5adc8fc19ed7b0675c998b5
+      size: 30866
+    - path: feature_store_schema.sql
+      hash: md5
+      md5: e982859729ff991bed9776826b38da6b
+      size: 3389
+  train:
+    cmd: python3 train_models.py
+    deps:
+    - path: data/processed/interactions_observed_prepared.csv
+      hash: md5
+      md5: b868989e2631542f3bb350d5efe5546c
+      size: 34263
+    - path: data/processed/items_prepared.csv
+      hash: md5
+      md5: 97a9062f76e6866cd046f47d517ee1e2
+      size: 2881
+    - path: data/processed/users_prepared.csv
+      hash: md5
+      md5: 9ab65a9eb880d3076a596489c8859050
+      size: 3259
+    - path: data/recomart.db
+      hash: md5
+      md5: 355e7f624197ebb2f12f760acb286d34
+      size: 253952
+    - path: feature_schema.sql
+      hash: md5
+      md5: beb908c060207246f2f4e8dfee4200c0
+      size: 2448
+    - path: feature_store.py
+      hash: md5
+      md5: f48df908a5adc8fc19ed7b0675c998b5
+      size: 30866
+    - path: feature_store_schema.sql
+      hash: md5
+      md5: e982859729ff991bed9776826b38da6b
+      size: 3389
+    - path: train_models.py
+      hash: md5
+      md5: 970e8e1e7c7ea597ca2c928474a15b50
+      size: 10531
+    - path: transformation.py
+      hash: md5
+      md5: 62b6f8f50da8a35bf9794b0840d190a8
+      size: 11825
+    outs:
+    - path: data/reports/model_performance.md
+      hash: md5
+      md5: 69736113bbb0174f4d96fc983968f8cc
+      size: 821
+    - path: data/reports/model_runs.json
+      hash: md5
+      md5: 596e565dfb69b34152ab211f043a364b
+      size: 1832
